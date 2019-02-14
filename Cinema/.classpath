@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/hsqldb.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/jackcess-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/mysql-connector-java-5.1.8-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/mysql-connector-java-5.1.14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Punrong/library to connect DB/ucanaccess-2.0.9.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
