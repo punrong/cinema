@@ -1,4 +1,4 @@
-package rupp.cinema;
+package main;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import sql_java_class.Employee;
+import staff_operation.MainControlActivity;
 
 public class SignIn extends JFrame {
 
@@ -145,12 +148,16 @@ public class SignIn extends JFrame {
 			    	rss = stm.executeQuery("SELECT * FROM tblEmployee;");
 			    	while(rss.next()) {	
 			    		Employee emp = new Employee();
-			    		emp.setUsername(rss.getString("username"));
-			    		emp.setPassword(rss.getString("password"));
+			    		emp.setID(rss.getString("ID"));
+			    		emp.setUsername(rss.getString("Username"));
+			    		emp.setPassword(rss.getString("Password"));
+			    		emp.setDateOfBirth(rss.getString("DateOfBirth"));
+			    		emp.setSalary(rss.getDouble("Salary"));
+			    		emp.setPhoneNumber(rss.getString("PhoneNumber"));
 			    		
 						if(txtUsername.getText().equals(emp.getUsername()) && pwd.getText().equals(emp.getPassword())) {
 							setVisible(false);
-							new MainControlActivity(emp.getUsername());
+							new MainControlActivity(emp);
 						}
 			    	}
 				} catch (SQLException e1) {

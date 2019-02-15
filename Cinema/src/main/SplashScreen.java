@@ -1,4 +1,4 @@
-package rupp.cinema;
+package main;
 
 public class SplashScreen {
 	

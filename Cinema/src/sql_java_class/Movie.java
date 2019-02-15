@@ -1,4 +1,4 @@
-package rupp.cinema;
+package sql_java_class;
 
 public class Movie {
 

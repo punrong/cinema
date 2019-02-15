@@ -1,4 +1,4 @@
-package rupp.cinema;
+package staff_operation;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

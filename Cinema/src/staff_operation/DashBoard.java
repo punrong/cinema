@@ -1,4 +1,4 @@
-package rupp.cinema;
+package staff_operation;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -20,7 +20,7 @@ public class DashBoard {
 	private JLabel lblWelcome;
 	private JLabel lblNowShowing;
 	private JLabel lblComingSoon;
-	private JLabel lblSale;
+	//private JLabel lblSale;
 	private JLabel lblReport;
 	private JLabel lblSignOut;
 	
@@ -28,7 +28,7 @@ public class DashBoard {
 	private GridBagConstraints gbc_PanelWelcome;
 	private GridBagConstraints gbc_lblNowShowing;
 	private GridBagConstraints gbc_lblComingSoon;
-	private GridBagConstraints gbc_lblSale;
+	//private GridBagConstraints gbc_lblSale;
 	private GridBagConstraints gbc_lblReport;
 	private GridBagConstraints gbc_lblSignout;
 	
@@ -44,9 +44,9 @@ public class DashBoard {
 		return this.lblComingSoon;
 	}
 	
-	public JLabel getlblSale() {
-		return this.lblSale;
-	}
+//	public JLabel getlblSale() {
+//		return this.lblSale;
+//	}
 	
 	public JLabel getlblReport() {
 		return this.lblReport;
@@ -71,7 +71,7 @@ public class DashBoard {
 		DashBoardLeftPanel.add(PanelWelcome, gbc_PanelWelcome);
 		DashBoardLeftPanel.add(lblNowShowing, gbc_lblNowShowing);
 		DashBoardLeftPanel.add(lblComingSoon, gbc_lblComingSoon);
-		DashBoardLeftPanel.add(lblSale, gbc_lblSale);
+//		DashBoardLeftPanel.add(lblSale, gbc_lblSale);
 		DashBoardLeftPanel.add(lblReport, gbc_lblReport);
 		DashBoardLeftPanel.add(lblSignOut, gbc_lblSignout);
 	}
@@ -118,15 +118,15 @@ public void initializeOntheLeft() {
 		gbc_lblComingSoon.gridy = 3;
 
 
-		lblSale = new JLabel("Sale");
-		lblSale.setForeground(Color.WHITE);
-		lblSale.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSale.setFont(new Font("Engravers MT", Font.BOLD, 16));
-		
-		gbc_lblSale = new GridBagConstraints();
-		gbc_lblSale.insets = new Insets(0, 0, 5, 0);
-		gbc_lblSale.gridx = 0;
-		gbc_lblSale.gridy = 4;
+//		lblSale = new JLabel("Sale");
+//		lblSale.setForeground(Color.WHITE);
+//		lblSale.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblSale.setFont(new Font("Engravers MT", Font.BOLD, 16));
+//		
+//		gbc_lblSale = new GridBagConstraints();
+//		gbc_lblSale.insets = new Insets(0, 0, 5, 0);
+//		gbc_lblSale.gridx = 0;
+//		gbc_lblSale.gridy = 4;
 
 		
 //		lblSchedule = new JLabel("Schedule");
@@ -148,7 +148,7 @@ public void initializeOntheLeft() {
 		gbc_lblReport = new GridBagConstraints();
 		gbc_lblReport.insets = new Insets(0, 0, 5, 0);
 		gbc_lblReport.gridx = 0;
-		gbc_lblReport.gridy = 5;
+		gbc_lblReport.gridy = 4;
 
 		
 		lblSignOut = new JLabel("SignOut");
@@ -158,6 +158,6 @@ public void initializeOntheLeft() {
 		
 		gbc_lblSignout = new GridBagConstraints();
 		gbc_lblSignout.gridx = 0;
-		gbc_lblSignout.gridy = 6;
+		gbc_lblSignout.gridy = 9;
 	}
 }

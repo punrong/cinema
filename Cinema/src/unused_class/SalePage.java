@@ -1,4 +1,4 @@
-package rupp.cinema;
+package unused_class;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -7,6 +7,9 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import sql_java_class.Movie;
+import sql_java_class.Schedule;
 
 public class SalePage {
 
@@ -18,24 +21,30 @@ public class SalePage {
 	private JPanel MovieDetailPanel;
 	private JPanel emptySpaceLeft;
 	private JPanel qtyPanel;
+	private JPanel schedulePanel;
 	
 	private JLabel image;
 	private JLabel lblQty;
+	private JLabel lblSchedule;
 	private JLabel lblMovieTitle = new JLabel();
 	private JComboBox<String> cboMovieID;
-	private JLabel lblMovieDirector = new JLabel();
-	private JLabel lblReleaseDate = new JLabel();
-	private JLabel lblGenre = new JLabel();
 	private JLabel lblDuration = new JLabel();
 	private JLabel lblPrice = new JLabel();
 	
 	private ArrayList<Movie> SaleMovieList;
+	private ArrayList<Schedule> ScheduleMovieList;
 	
 	private JButton btnIncreaseQty;
 	private JButton btnDecreaseQty;
 	
+	private JButton btnNextSchedule;
+	private JButton btnPrevSchedule;
+	
 	private int currentQty = 1;
-	private static int currentIndex = 0;
+	private String currentSchedule;
+	private int StartingTimeSize;
+	private int currentStartingTimeIndex = 0;
+	private int currentMovieIndex = 0;
 	
 	public JPanel getEmptySpaceLeft() {
 		return this.emptySpaceLeft;
@@ -72,33 +81,35 @@ public class SalePage {
 		gridSalePanel.add(new JLabel(""));
 		gridSalePanel.add(new JLabel(""));
 		
-		lblMovieTitle.setText(SaleMovieList.get(currentIndex).getTitle());
+		lblMovieTitle.setText(SaleMovieList.get(currentMovieIndex).getTitle());
 		gridSalePanel.add(new JLabel("        Movie Title"));
 		gridSalePanel.add(lblMovieTitle);
 		gridSalePanel.add(new JLabel(""));
 		gridSalePanel.add(new JLabel(""));
 		
-		lblMovieDirector.setText(SaleMovieList.get(currentIndex).getDirector());
-		gridSalePanel.add(new JLabel("        Movie Director"));
-		gridSalePanel.add(lblMovieDirector);
-		gridSalePanel.add(new JLabel(""));
-		gridSalePanel.add(new JLabel(""));
-		
-		lblReleaseDate.setText(SaleMovieList.get(currentIndex).getReleaseDate());
-		gridSalePanel.add(new JLabel("        Release Date"));
-		gridSalePanel.add(lblReleaseDate);
-		gridSalePanel.add(new JLabel(""));
-		gridSalePanel.add(new JLabel(""));
-		
-		lblDuration.setText(SaleMovieList.get(currentIndex).getDuration());
+		lblDuration.setText(SaleMovieList.get(currentMovieIndex).getDuration());
 		gridSalePanel.add(new JLabel("        Duration"));
 		gridSalePanel.add(lblDuration);
 		gridSalePanel.add(new JLabel(""));
 		gridSalePanel.add(new JLabel(""));
+
+		gridSalePanel.add(new JLabel("        Schedule"));
+		gridSalePanel.add(schedulePanel);
+		gridSalePanel.add(new JLabel(""));
+		gridSalePanel.add(new JLabel(""));
 		
-		lblGenre.setText(SaleMovieList.get(currentIndex).getGenre());
-		gridSalePanel.add(new JLabel("        Genre"));
-		gridSalePanel.add(lblGenre);
+		gridSalePanel.add(new JLabel("        Hall"));
+		gridSalePanel.add(new JLabel("1"));
+		gridSalePanel.add(new JLabel(""));
+		gridSalePanel.add(new JLabel(""));
+		
+		gridSalePanel.add(new JLabel("        Total Seat"));
+		gridSalePanel.add(new JLabel("50"));
+		gridSalePanel.add(new JLabel(""));
+		gridSalePanel.add(new JLabel(""));
+		
+		gridSalePanel.add(new JLabel("        Available Seat"));
+		gridSalePanel.add(new JLabel("50"));
 		gridSalePanel.add(new JLabel(""));
 		gridSalePanel.add(new JLabel(""));
 		
@@ -107,7 +118,7 @@ public class SalePage {
 		gridSalePanel.add(new JLabel(""));
 		gridSalePanel.add(new JLabel(""));
 		
-		lblPrice.setText(SaleMovieList.get(currentIndex).getPrice() + "$");
+		lblPrice.setText(SaleMovieList.get(currentMovieIndex).getPrice() + "$");
 		gridSalePanel.add(new JLabel("        Price"));
 		gridSalePanel.add(lblPrice);
 		gridSalePanel.add(new JLabel(""));
@@ -130,7 +141,7 @@ public class SalePage {
 		
 		MovieDetailPanel.add(gridSalePanel, BorderLayout.NORTH);
 		ParentSalePanel.add(MovieDetailPanel, BorderLayout.CENTER);
-		GrandParentSalePanel.add(new JLabel("<html><br/><br/><br/><br/><br/><br/></html>"),BorderLayout.NORTH);
+		GrandParentSalePanel.add(new JLabel("<html><br/><br/></html>"),BorderLayout.NORTH);
 		imagePanel.add(CardImagePanel,BorderLayout.NORTH);
 		GrandParentSalePanel.add(imagePanel, BorderLayout.WEST);
 		GrandParentSalePanel.add(ParentSalePanel, BorderLayout.CENTER);
@@ -140,6 +151,7 @@ public class SalePage {
 	public void initialization() {
 
 		SaleMovieList = new ArrayList<Movie>();
+		ScheduleMovieList = new ArrayList<Schedule>();
 		cboMovieID = new JComboBox<String>();
 		cboMovieID.setBackground(Color.WHITE);
 		
@@ -168,6 +180,21 @@ public class SalePage {
 			    		SaleMovieList.add(movie);
 			    		cboMovieID.addItem(movie.getID());
 			    	}
+			    	
+			    	rss = stm.executeQuery("SELECT * FROM tblSchedule;");
+			    	while(rss.next()) {
+			    		Schedule schedule = new Schedule();
+			    		
+			    		schedule.setID(rss.getString("ID"));
+			    		schedule.setMovieID(rss.getString("MovieID"));
+			    		schedule.setStartingTime(rss.getString("StartingTime"));
+			    		schedule.setHall(rss.getInt("Hall"));
+			    		schedule.setTotalSeat(rss.getInt("TotalSeat"));
+			    		schedule.setAvailableSeat(rss.getInt("AvailableSeat"));
+			    		
+			    		ScheduleMovieList.add(schedule);
+			    	}
+			    	
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
@@ -183,16 +210,13 @@ public class SalePage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				currentQty = 1;
-				currentIndex = cboMovieID.getSelectedIndex();
-				lblMovieTitle.setText(SaleMovieList.get(currentIndex).getTitle());
-				lblMovieDirector.setText(SaleMovieList.get(currentIndex).getDirector());
-				lblReleaseDate.setText(SaleMovieList.get(currentIndex).getReleaseDate());
-				lblDuration.setText(SaleMovieList.get(currentIndex).getDuration());
-				lblGenre.setText(SaleMovieList.get(currentIndex).getGenre());
-				CardImagePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), SaleMovieList.get(currentIndex).getTitle(), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-				image.setIcon(new ImageIcon("resource/" + SaleMovieList.get(currentIndex).getTitle() + ".jpg"));
+				currentMovieIndex = cboMovieID.getSelectedIndex();
+				lblMovieTitle.setText(SaleMovieList.get(currentMovieIndex).getTitle());
+				lblDuration.setText(SaleMovieList.get(currentMovieIndex).getDuration());
+				CardImagePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), SaleMovieList.get(currentMovieIndex).getTitle(), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+				image.setIcon(new ImageIcon("resource/" + SaleMovieList.get(currentMovieIndex).getTitle() + ".jpg"));
 				lblQty.setText("   " + currentQty + "   ");
-				lblPrice.setText(SaleMovieList.get(currentIndex).getPrice() * currentQty + "$");
+				lblPrice.setText(SaleMovieList.get(currentMovieIndex).getPrice() * currentQty + "$");
 			}
 			
 		});
@@ -209,11 +233,29 @@ public class SalePage {
 		btnDecreaseQty.setText("-");
 		mouseAction(btnDecreaseQty);
 		
+		btnNextSchedule = new JButton();
+		btnNextSchedule.setBackground(Color.LIGHT_GRAY);
+		btnNextSchedule.setForeground(Color.WHITE);
+		btnNextSchedule.setText(">");
+		mouseAction(btnNextSchedule);
+		
+		btnPrevSchedule = new JButton();
+		btnPrevSchedule.setBackground(Color.LIGHT_GRAY);
+		btnPrevSchedule.setForeground(Color.WHITE);
+		btnPrevSchedule.setText("<");
+		mouseAction(btnPrevSchedule);
+		
 		image = new JLabel();
-		image.setIcon(new ImageIcon("resource/" + SaleMovieList.get(currentIndex).getTitle() + ".jpg"));
+		image.setIcon(new ImageIcon("resource/" + SaleMovieList.get(currentMovieIndex).getTitle() + ".jpg"));
+		
 		lblQty = new JLabel();
 		lblQty.setText("   " + currentQty + "   ");
 		lblQty.setHorizontalAlignment(JLabel.CENTER);
+
+		currentSchedule = ScheduleMovieList.get(currentStartingTimeIndex).getStartingTime();
+		lblSchedule = new JLabel();
+		lblSchedule.setText("   " + currentSchedule + "   ");
+		lblSchedule.setHorizontalAlignment(JLabel.CENTER);
 		
 		emptySpaceLeft = new JPanel();
 		emptySpaceLeft.setBackground(Color.WHITE);
@@ -227,8 +269,16 @@ public class SalePage {
 		qtyPanel.add(lblQty , BorderLayout.CENTER);
 		qtyPanel.add(btnIncreaseQty, BorderLayout.EAST);
 		
+		schedulePanel = new JPanel();
+		schedulePanel.setLayout(new BorderLayout(0,0));
+		schedulePanel.setBackground(Color.WHITE);
+		
+		schedulePanel.add(btnPrevSchedule,BorderLayout.WEST);
+		schedulePanel.add(lblSchedule , BorderLayout.CENTER);
+		schedulePanel.add(btnNextSchedule, BorderLayout.EAST);
+		
 		CardImagePanel = new JPanel();
-		CardImagePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), SaleMovieList.get(currentIndex).getTitle(), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		CardImagePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), SaleMovieList.get(currentMovieIndex).getTitle(), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		CardImagePanel.setBackground(Color.WHITE);
 		CardImagePanel.setLayout(new CardLayout(5, 5));
 		CardImagePanel.add(image);
@@ -257,13 +307,27 @@ public class SalePage {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {	
-				if(selectedButton.equals(btnIncreaseQty))
+				if(selectedButton.equals(btnIncreaseQty)) {
 					currentQty++;
-				else if(selectedButton.equals(btnDecreaseQty) && currentQty != 1)
-					currentQty--;
+					lblQty.setText("   " + currentQty + "   ");
+					lblPrice.setText(SaleMovieList.get(currentMovieIndex).getPrice() * currentQty + "$");
+				} 
 				
-				lblQty.setText("   " + currentQty + "   ");
-				lblPrice.setText(SaleMovieList.get(currentIndex).getPrice() * currentQty + "$");
+				else if(selectedButton.equals(btnDecreaseQty) && currentQty != 1) {
+					currentQty--;
+					lblQty.setText("   " + currentQty + "   ");
+					lblPrice.setText(SaleMovieList.get(currentMovieIndex).getPrice() * currentQty + "$");
+				}
+				
+				else if(selectedButton.equals(btnNextSchedule) && currentStartingTimeIndex != ScheduleMovieList.size()-1) {
+					currentSchedule = ScheduleMovieList.get(++currentStartingTimeIndex).getStartingTime();
+					lblSchedule.setText("   " + currentSchedule + "   ");
+				}
+				
+				else if(selectedButton.equals(btnPrevSchedule) && currentStartingTimeIndex != 0) {
+					currentSchedule = ScheduleMovieList.get(--currentStartingTimeIndex).getStartingTime();
+					lblSchedule.setText("   " + currentSchedule + "   ");
+				}
 			}
 		});
 	}

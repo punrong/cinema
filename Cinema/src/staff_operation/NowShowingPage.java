@@ -1,4 +1,4 @@
-package rupp.cinema;
+package staff_operation;
 
 import java.awt.*;
 import java.sql.*;
@@ -6,6 +6,9 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import sql_java_class.Employee;
+import sql_java_class.Movie;
 
 import java.awt.event.*;
 
@@ -19,13 +22,15 @@ public class NowShowingPage {
 	private ArrayList<ImageIcon> NowShowingMovieImage;
 	private int currentIndexOfNowShowingMovieList = 0;
 	private ArrayList<Movie> NowShowingMovieList;	
-	private ArrayList<SaleByNowShowing> SaleBy = new ArrayList<SaleByNowShowing>();
+	private ArrayList<NowShowingMovieSchedule> SaleBy = new ArrayList<NowShowingMovieSchedule>();
+	private static Employee currentUser = new Employee();
 	
 	public JPanel getGrandParentNowShowingPanel() {
 		return this.GrandParentNowShowingPanel;
 	}
 	
-	public NowShowingPage() {		
+	public NowShowingPage(Employee currentUser) {
+		NowShowingPage.currentUser = currentUser;
 		initialization();
 		
 		GrandParentNowShowingPanel = new JPanel();
@@ -162,7 +167,7 @@ public void initialization() {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				SaleBy.add(new SaleByNowShowing(movie));
+				SaleBy.add(new NowShowingMovieSchedule(movie, NowShowingPage.currentUser));
 				if(SaleBy.size() > 1) {
 					SaleBy.get(SaleBy.size()-2).setVisible(false);
 				}
