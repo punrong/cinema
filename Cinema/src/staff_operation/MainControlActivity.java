@@ -4,9 +4,17 @@ import javax.swing.*;
 
 import main.SignInOptions;
 import sql_java_class.Employee;
+import sql_java_class.Sale;
+import sql_java_class.Schedule;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.table.DefaultTableModel;
 
 public class MainControlActivity extends JFrame {
@@ -15,6 +23,7 @@ public class MainControlActivity extends JFrame {
 	
 	private NowShowingPage ShowingPage;
 	private ComingSoonPage ComingPage = new ComingSoonPage();
+	private ReportPage reportPage;
 	//private SalePage sale = new SalePage();
 	private DashBoard dashBoard = new DashBoard();
 	private ScrollTop scrollTop;
@@ -25,12 +34,7 @@ public class MainControlActivity extends JFrame {
 	private JPanel ReportPanel;
 
 	private static Employee currentUser;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JTextField textField;
-	private JButton btnNewButton;
-	private JScrollPane scrollPane;
-	private JTable table;
+
 
 	public static void main(String[] args) {
 		new MainControlActivity(currentUser);
@@ -39,6 +43,7 @@ public class MainControlActivity extends JFrame {
 	public MainControlActivity(Employee currentUser) {
 		MainControlActivity.currentUser = currentUser;
 		ShowingPage = new NowShowingPage(MainControlActivity.currentUser);
+		reportPage = new ReportPage(MainControlActivity.currentUser);
 		initialization();
 		setTitle("Phnom Penh Cinema");
 		ImageIcon img = new ImageIcon("resource/mini logo.png"); 
@@ -75,48 +80,11 @@ public class MainControlActivity extends JFrame {
 		DescriptionPane.add(ReportPanel);
 		ReportPanel.setLayout(new BorderLayout(0, 0));
 		
-		panel = new JPanel();
-		ReportPanel.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
-		
-		panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
-		
-		textField = new JTextField();
-		panel_1.add(textField);
-		textField.setColumns(10);
-		
-		btnNewButton = new JButton("New button");
-		panel_1.add(btnNewButton);
-		
-		scrollPane = new JScrollPane();
-		panel.add(scrollPane, BorderLayout.CENTER);
-		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"SaleID", "ScheduleID", "EmployeeID", "Date", "Time", "TotalAmount", "TotalPrice", "Payment", "YourReturn"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, Integer.class, Double.class, Double.class, Double.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		scrollPane.setViewportView(table);
+	
 
 //		SalePanel.add(sale.getEmptySpaceLeft(), BorderLayout.WEST);
 //		SalePanel.add(sale.getMainPanel(), BorderLayout.CENTER);
+		ReportPanel.add(reportPage.getGrandParentReportPanel(), BorderLayout.CENTER);
 		NowShowingPanel.add(ShowingPage.getGrandParentNowShowingPanel(), BorderLayout.CENTER);
 		ComingSoonPanel.add(ComingPage.getGrandParentComingSoonPanel(), BorderLayout.CENTER);
 		
@@ -187,12 +155,14 @@ public class MainControlActivity extends JFrame {
 					ComingSoonPanel.setVisible(false);
 					//SalePanel.setVisible(false);
 					ReportPanel.setVisible(false);
+					
 				}
 				else if(selectedLabel.equals(dashBoard.getlblComingSoon())) {
 					ComingSoonPanel.setVisible(true);
 					NowShowingPanel.setVisible(false);
 					//SalePanel.setVisible(false);
 					ReportPanel.setVisible(false);
+//					refreshFrame();
 				}
 					
 //				else if(selectedLabel.equals(dashBoard.getlblSale())) {
@@ -203,10 +173,12 @@ public class MainControlActivity extends JFrame {
 //				}
 					
 				else if(selectedLabel.equals(dashBoard.getlblReport())) {
+					reportPage.UpdateTable();
 					ReportPanel.setVisible(true);
 					//SalePanel.setVisible(false);
 					NowShowingPanel.setVisible(false);
 					ComingSoonPanel.setVisible(false);
+//					refreshFrame();
 				}
 					
 				else if(selectedLabel.equals(dashBoard.getlblSignOut())) {
@@ -216,5 +188,9 @@ public class MainControlActivity extends JFrame {
 				}
 			}
 		});
+	}
+	private void refreshFrame() {
+		repaint();
+		revalidate();
 	}
 }

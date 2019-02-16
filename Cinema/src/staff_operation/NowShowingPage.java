@@ -24,6 +24,7 @@ public class NowShowingPage {
 	private ArrayList<Movie> NowShowingMovieList;	
 	private ArrayList<NowShowingMovieSchedule> SaleBy = new ArrayList<NowShowingMovieSchedule>();
 	private static Employee currentUser = new Employee();
+	private static ReportPage reportPage = new ReportPage(currentUser);
 	
 	public JPanel getGrandParentNowShowingPanel() {
 		return this.GrandParentNowShowingPanel;
@@ -167,7 +168,7 @@ public void initialization() {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				SaleBy.add(new NowShowingMovieSchedule(movie, NowShowingPage.currentUser));
+				SaleBy.add(new NowShowingMovieSchedule(movie, NowShowingPage.currentUser,NowShowingPage.reportPage));
 				if(SaleBy.size() > 1) {
 					SaleBy.get(SaleBy.size()-2).setVisible(false);
 				}

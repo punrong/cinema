@@ -27,6 +27,7 @@ public class NowShowingMovieSchedule extends JFrame {
 	private static Movie movie = new Movie();
 	private static Employee currentUser = new Employee();
 	private Sale sale = new Sale();
+	private static ReportPage reportPage = new ReportPage(currentUser);
 	
 	private JPanel CardImagePanel ;
 	private JLabel imageIcon;
@@ -62,13 +63,14 @@ public class NowShowingMovieSchedule extends JFrame {
 	private JTextField txtPayment;
 	
 	public static void main(String[] args) {
-			new NowShowingMovieSchedule(movie, currentUser);
+			new NowShowingMovieSchedule(movie, currentUser, reportPage);
 	}
 
-	public NowShowingMovieSchedule(Movie movie, Employee currentUser) {
+	public NowShowingMovieSchedule(Movie movie, Employee currentUser, ReportPage reportPage) {
 		getContentPane().setBackground(Color.WHITE);
 		NowShowingMovieSchedule.movie = movie;
 		NowShowingMovieSchedule.currentUser = currentUser;
+		NowShowingMovieSchedule.reportPage = reportPage;
 		setBackground(Color.WHITE);
 		initialization();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -370,6 +372,7 @@ public class NowShowingMovieSchedule extends JFrame {
 								 
 								 setVisible(false);
 								 JOptionPane.showMessageDialog(null,"Purchase Successfully\n" + "Please take your change : " + sale.getYourReturn() + "$");
+								 
 						 }
 						 else {
 							JOptionPane.showMessageDialog(null,"Not enough payment\n");
