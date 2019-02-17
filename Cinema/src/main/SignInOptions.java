@@ -15,8 +15,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
 
 public class SignInOptions extends JFrame {
-
-	//I have the background image
 	
 	private JPanel MainPanel;
 	private JLabel lblClose;

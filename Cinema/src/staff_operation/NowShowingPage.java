@@ -74,8 +74,13 @@ public void initialization() {
 			 cnn =  DriverManager.getConnection("jdbc:mysql://localhost:3306/cinema", "root", "");
 			   stm =cnn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 					   ResultSet.CONCUR_UPDATABLE);
-			    	rss = stm.executeQuery("SELECT * FROM tblNowShowingMovie;");
+			    	rss = stm.executeQuery("SELECT * FROM tblMovie;");
 			    	while(rss.next()) {
+			    		
+			    		Timestamp date = new Timestamp(new java.util.Date().getTime());
+			    		
+			    		if(date.compareTo(rss.getTimestamp("ReleaseDate")) >= 0) {
+			    		
 			    		Movie movie = new Movie();
 			    		
 			    		movie.setID(rss.getString("ID"));
@@ -88,6 +93,7 @@ public void initialization() {
 			    		
 			    		NowShowingMovieList.add(movie);
 			    		NowShowingMovieImage.add(new ImageIcon("resource/" + movie.getTitle() + ".jpg"));
+			    		}
 			    	}
 				} catch (SQLException e) {
 					e.printStackTrace();

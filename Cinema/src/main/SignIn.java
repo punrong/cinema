@@ -155,7 +155,7 @@ public class SignIn extends JFrame {
 			    		emp.setSalary(rss.getDouble("Salary"));
 			    		emp.setPhoneNumber(rss.getString("PhoneNumber"));
 			    		
-						if(txtUsername.getText().equals(emp.getUsername()) && pwd.getText().equals(emp.getPassword())) {
+						if(txtUsername.getText().equals(emp.getUsername()) && String.valueOf(pwd.getPassword()).equals(emp.getPassword())) {
 							setVisible(false);
 							new MainControlActivity(emp);
 						}
@@ -166,7 +166,6 @@ public class SignIn extends JFrame {
 					try {
 						cnn.close();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

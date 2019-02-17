@@ -6,6 +6,7 @@ public class Sale {
 	private String EmployeeID;
 	private String DateBought;
 	private String TimeBought;
+	private String MemberID;
 	private int TotalAmount;
 	private double TotalPrice;
 	private double Payment;
@@ -13,6 +14,10 @@ public class Sale {
 
 	public Sale() {
 		
+	}
+	
+	public void setMemberID(String MemberID) {
+		this.MemberID = MemberID;
 	}
 	
 	public void setID(String ID) {
@@ -62,6 +67,10 @@ public class Sale {
 	
 	public String getEmployeeID() {
 		return this.EmployeeID;
+	}
+	
+	public String getMemberID() {
+		return this.MemberID;
 	}
 	
 	public String getDateBought() {

@@ -24,13 +24,11 @@ public class MainControlActivity extends JFrame {
 	private NowShowingPage ShowingPage;
 	private ComingSoonPage ComingPage = new ComingSoonPage();
 	private ReportPage reportPage;
-	//private SalePage sale = new SalePage();
 	private DashBoard dashBoard = new DashBoard();
 	private ScrollTop scrollTop;
 	
 	private JPanel NowShowingPanel ;
 	private JPanel ComingSoonPanel;
-	//private JPanel SalePanel;
 	private JPanel ReportPanel;
 
 	private static Employee currentUser;
@@ -71,19 +69,12 @@ public class MainControlActivity extends JFrame {
 		
 		headerOntheMiddle(NowShowingPanel, "Now Showing");
 		headerOntheMiddle(ComingSoonPanel," Coming Soon");
-//		headerOntheMiddle(SalePanel, "Sale");
 		headerOntheMiddle(ReportPanel, "Report");
 		
 		DescriptionPane.add(NowShowingPanel);			
 		DescriptionPane.add(ComingSoonPanel);
-//		DescriptionPane.add(SalePanel);
-		DescriptionPane.add(ReportPanel);
-		ReportPanel.setLayout(new BorderLayout(0, 0));
-		
-	
+		DescriptionPane.add(ReportPanel);	
 
-//		SalePanel.add(sale.getEmptySpaceLeft(), BorderLayout.WEST);
-//		SalePanel.add(sale.getMainPanel(), BorderLayout.CENTER);
 		ReportPanel.add(reportPage.getGrandParentReportPanel(), BorderLayout.CENTER);
 		NowShowingPanel.add(ShowingPage.getGrandParentNowShowingPanel(), BorderLayout.CENTER);
 		ComingSoonPanel.add(ComingPage.getGrandParentComingSoonPanel(), BorderLayout.CENTER);
@@ -91,8 +82,6 @@ public class MainControlActivity extends JFrame {
 		getContentPane().add(dashBoard.getDashBoardLeftPanel(), BorderLayout.WEST);
 		mouseAction(dashBoard.getlblNowShowing());
 		mouseAction(dashBoard.getlblComingSoon());
-//		mouseAction(dashBoard.getlblSale());
-//		mouseAction(dashBoard.getlblSchedule());
 		mouseAction(dashBoard.getlblReport());
 		mouseAction(dashBoard.getlblSignOut());
 	}
@@ -106,14 +95,11 @@ public class MainControlActivity extends JFrame {
 		
 		ComingSoonPanel = new JPanel();
 		ComingSoonPanel.setBackground(Color.WHITE);
-		ComingSoonPanel.setLayout(new BorderLayout(0, 0));
-		
-//		SalePanel = new JPanel();	
-//		SalePanel.setBackground(Color.WHITE);
-//		SalePanel.setLayout(new BorderLayout(0, 0));		
+		ComingSoonPanel.setLayout(new BorderLayout(0, 0));		
 		
 		ReportPanel = new JPanel();		
 		ReportPanel.setBackground(Color.WHITE);
+		ReportPanel.setLayout(new BorderLayout(0, 0));
 	}
 	
 	public void headerOntheMiddle(JPanel thisPanel, String title) {
@@ -153,32 +139,20 @@ public class MainControlActivity extends JFrame {
 				if(selectedLabel.equals(dashBoard.getlblNowShowing())) {
 					NowShowingPanel.setVisible(true);
 					ComingSoonPanel.setVisible(false);
-					//SalePanel.setVisible(false);
 					ReportPanel.setVisible(false);
 					
 				}
 				else if(selectedLabel.equals(dashBoard.getlblComingSoon())) {
 					ComingSoonPanel.setVisible(true);
 					NowShowingPanel.setVisible(false);
-					//SalePanel.setVisible(false);
 					ReportPanel.setVisible(false);
-//					refreshFrame();
 				}
-					
-//				else if(selectedLabel.equals(dashBoard.getlblSale())) {
-//					SalePanel.setVisible(true);
-//					ComingSoonPanel.setVisible(false);
-//					NowShowingPanel.setVisible(false);
-//					ReportPanel.setVisible(false);	
-//				}
-					
+				
 				else if(selectedLabel.equals(dashBoard.getlblReport())) {
-					reportPage.UpdateTable();
 					ReportPanel.setVisible(true);
-					//SalePanel.setVisible(false);
+					reportPage.updateTable();
 					NowShowingPanel.setVisible(false);
 					ComingSoonPanel.setVisible(false);
-//					refreshFrame();
 				}
 					
 				else if(selectedLabel.equals(dashBoard.getlblSignOut())) {
@@ -188,9 +162,5 @@ public class MainControlActivity extends JFrame {
 				}
 			}
 		});
-	}
-	private void refreshFrame() {
-		repaint();
-		revalidate();
 	}
 }

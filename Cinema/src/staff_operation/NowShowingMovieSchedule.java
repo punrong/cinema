@@ -61,6 +61,9 @@ public class NowShowingMovieSchedule extends JFrame {
 	private ArrayList<Schedule> ScheduleMovieList;
 	private JLabel lblPayment;
 	private JTextField txtPayment;
+	private JTextField txtMemberID;
+	
+	private JCheckBox chckbxMember;
 	
 	public static void main(String[] args) {
 			new NowShowingMovieSchedule(movie, currentUser, reportPage);
@@ -162,6 +165,30 @@ public class NowShowingMovieSchedule extends JFrame {
 		lblMovieID = new JLabel();
 		lblMovieID.setText(ScheduleMovieList.get(currentScheduleIndex).getMovieID());
 		grdMovieDetail.add(lblMovieID);
+		
+		chckbxMember = new JCheckBox("Member");
+		chckbxMember.setHorizontalAlignment(SwingConstants.LEFT);
+		chckbxMember.setBackground(Color.WHITE);
+		grdMovieDetail.add(chckbxMember);
+		
+		txtMemberID = new JTextField();
+		txtMemberID.setEditable(false);
+		txtMemberID.setText("C000");
+		grdMovieDetail.add(txtMemberID);
+		txtMemberID.setColumns(10);
+		
+		chckbxMember.addItemListener(new ItemListener() {
+		    @Override
+		    public void itemStateChanged(ItemEvent e) {
+		        if(e.getStateChange() == ItemEvent.SELECTED) {
+		        	txtMemberID.setEditable(true);
+		        	txtMemberID.setText("");
+		        } else {
+		        	txtMemberID.setEditable(false);
+		        	txtMemberID.setText("C000");
+		        };
+		    }
+		});
 		
 		grdMovieDetail.add(new JLabel("Starting Time"));
 		lblStartingTime = new JLabel();
@@ -334,22 +361,36 @@ public class NowShowingMovieSchedule extends JFrame {
 						 
 						 Statement  stm =cnn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 								   ResultSet.CONCUR_UPDATABLE);
-						 ResultSet  	rss = stm.executeQuery("SELECT * FROM tblSale ORDER BY ID DESC LIMIT 1;");
-						 int id = 1;
+						 ResultSet  	rss = stm.executeQuery("SELECT * FROM tblSale ORDER BY TIME DESC LIMIT 1;");
+						 String id = "1";
 						 if(rss.next() == true) {
-							 id = Integer.parseInt(rss.getString("ID").substring(4));
-							 id++;
+							 id = rss.getString("ID").substring(4);
+							 id = Integer.parseInt(id) + 1 +"";
+							 
 							 }
 						
+							chckbxMember.addItemListener(new ItemListener() {
+							    @Override
+							    public void itemStateChanged(ItemEvent e) {
+							        if(e.getStateChange() == ItemEvent.SELECTED) {
+							        	txtMemberID.setEditable(true);
+							        	txtMemberID.setText("");
+							        } else {
+							        	txtMemberID.setEditable(false);
+							        	txtMemberID.setText("C000");
+							        };
+							    }
+							});
 						 
-						 if(Double.parseDouble(txtPayment.getText()) >= movie.getPrice() * currentQty) {
+						 if(Double.parseDouble(txtPayment.getText()) >= movie.getPrice() * currentQty && !txtMemberID.getText().isEmpty()) {
 							 PreparedStatement preparedStmt = cnn.prepareStatement(" INSERT into tblsale "
-								 		+ "(ID, ScheduleID, EmployeeID, Date, Time, TotalAmount, TotalPrice, Payment, YourReturn) "
-									        + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
+								 		+ "(ID, ScheduleID, EmployeeID, MemberID, Date, Time, TotalAmount, TotalPrice, Payment, YourReturn) "
+									        + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
 								
 							 	 sale.setID("Sale"+ id);
 								 sale.setScheduleID(ScheduleMovieList.get(currentScheduleIndex).getID());
 								 sale.setEmployeeID(NowShowingMovieSchedule.currentUser.getID());
+								 sale.setMemberID(txtMemberID.getText());
 								 sale.setTotalAmount(currentQty);
 								 sale.setTotalPrice(movie.getPrice() * currentQty);
 								 sale.setPayment(Double.parseDouble(txtPayment.getText()));
@@ -358,15 +399,16 @@ public class NowShowingMovieSchedule extends JFrame {
 								 preparedStmt.setString(1, sale.getID());
 								 preparedStmt.setString(2, sale.getScheduleID());
 								 preparedStmt.setString(3, sale.getEmployeeID());
+								 preparedStmt.setString(4, sale.getMemberID());
 								
 								 Timestamp date = new Timestamp(new java.util.Date().getTime());
-								 preparedStmt.setTimestamp(4, date);
 								 preparedStmt.setTimestamp(5, date);
+								 preparedStmt.setTimestamp(6, date);
 	
-								 preparedStmt.setInt(6, sale.getTotalAmount());
-								 preparedStmt.setDouble(7, sale.getTotalPrice());
-								 preparedStmt.setDouble(8, sale.getPayment());
-								 preparedStmt.setDouble(9, sale.getYourReturn());
+								 preparedStmt.setInt(7, sale.getTotalAmount());
+								 preparedStmt.setDouble(8, sale.getTotalPrice());
+								 preparedStmt.setDouble(9, sale.getPayment());
+								 preparedStmt.setDouble(10, sale.getYourReturn());
 								 
 								 preparedStmt.execute();
 								 
@@ -374,8 +416,11 @@ public class NowShowingMovieSchedule extends JFrame {
 								 JOptionPane.showMessageDialog(null,"Purchase Successfully\n" + "Please take your change : " + sale.getYourReturn() + "$");
 								 
 						 }
+						 else if(txtMemberID.getText().isEmpty()){
+							JOptionPane.showMessageDialog(null,"Please enter your Member ID\n");
+						 }
 						 else {
-							JOptionPane.showMessageDialog(null,"Not enough payment\n");
+							 JOptionPane.showMessageDialog(null,"Not enough payment\n"); 
 						 }
 							} catch (SQLException e1) {
 								e1.printStackTrace();

@@ -20,7 +20,6 @@ public class DashBoard {
 	private JLabel lblWelcome;
 	private JLabel lblNowShowing;
 	private JLabel lblComingSoon;
-	//private JLabel lblSale;
 	private JLabel lblReport;
 	private JLabel lblSignOut;
 	
@@ -28,7 +27,6 @@ public class DashBoard {
 	private GridBagConstraints gbc_PanelWelcome;
 	private GridBagConstraints gbc_lblNowShowing;
 	private GridBagConstraints gbc_lblComingSoon;
-	//private GridBagConstraints gbc_lblSale;
 	private GridBagConstraints gbc_lblReport;
 	private GridBagConstraints gbc_lblSignout;
 	
@@ -43,10 +41,6 @@ public class DashBoard {
 	public JLabel getlblComingSoon() {
 		return this.lblComingSoon;
 	}
-	
-//	public JLabel getlblSale() {
-//		return this.lblSale;
-//	}
 	
 	public JLabel getlblReport() {
 		return this.lblReport;
@@ -71,7 +65,6 @@ public class DashBoard {
 		DashBoardLeftPanel.add(PanelWelcome, gbc_PanelWelcome);
 		DashBoardLeftPanel.add(lblNowShowing, gbc_lblNowShowing);
 		DashBoardLeftPanel.add(lblComingSoon, gbc_lblComingSoon);
-//		DashBoardLeftPanel.add(lblSale, gbc_lblSale);
 		DashBoardLeftPanel.add(lblReport, gbc_lblReport);
 		DashBoardLeftPanel.add(lblSignOut, gbc_lblSignout);
 	}
@@ -116,29 +109,6 @@ public void initializeOntheLeft() {
 		gbc_lblComingSoon.insets = new Insets(0, 0, 5, 0);
 		gbc_lblComingSoon.gridx = 0;
 		gbc_lblComingSoon.gridy = 3;
-
-
-//		lblSale = new JLabel("Sale");
-//		lblSale.setForeground(Color.WHITE);
-//		lblSale.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblSale.setFont(new Font("Engravers MT", Font.BOLD, 16));
-//		
-//		gbc_lblSale = new GridBagConstraints();
-//		gbc_lblSale.insets = new Insets(0, 0, 5, 0);
-//		gbc_lblSale.gridx = 0;
-//		gbc_lblSale.gridy = 4;
-
-		
-//		lblSchedule = new JLabel("Schedule");
-//		lblSchedule.setForeground(Color.WHITE);
-//		lblSchedule.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblSchedule.setFont(new Font("Engravers MT", Font.BOLD, 16));
-//		
-//		gbc_lblSchedule = new GridBagConstraints();
-//		gbc_lblSchedule.insets = new Insets(0, 0, 5, 0);
-//		gbc_lblSchedule.gridx = 0;
-//		gbc_lblSchedule.gridy = 5;
-
 		
 		lblReport = new JLabel("Report");
 		lblReport.setHorizontalAlignment(SwingConstants.CENTER);

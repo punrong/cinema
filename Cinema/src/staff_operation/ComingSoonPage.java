@@ -44,6 +44,7 @@ public class ComingSoonPage {
 			numOfColumn = ComingSoonMovieList.size()/2 +1;
 		
 		grdComingSoonPanel = new JPanel();
+		grdComingSoonPanel.setBackground(Color.WHITE);
 		ParentComingSoonPanel.add(grdComingSoonPanel, BorderLayout.NORTH);
 		grdComingSoonPanel.setLayout(new GridLayout(0, numOfColumn, 0, 0));
 		
@@ -68,9 +69,13 @@ public class ComingSoonPage {
 			stm = cnn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 					 ResultSet.CONCUR_UPDATABLE);
 			
-			rss = stm.executeQuery("SELECT * FROM tblComingSoonMovie;");
+			rss = stm.executeQuery("SELECT * FROM tblMovie;");
 			
 			while(rss.next()) {
+				
+				Timestamp date = new Timestamp(new java.util.Date().getTime());
+	    		
+	    		if(date.compareTo(rss.getTimestamp("ReleaseDate")) < 0) {
 				Movie movie = new Movie();
 				
 				movie.setID(rss.getString("ID"));
@@ -82,6 +87,7 @@ public class ComingSoonPage {
 	    		
 	    		ComingSoonMovieList.add(movie);
 	    		ComingSoonMovieImage.add(new ImageIcon("resource/" + movie.getTitle() + ".jpg"));
+	    		}
 			}
 			
 			
