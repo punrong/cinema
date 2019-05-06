@@ -6420,7 +6420,7 @@ public class managerFunction extends JFrame implements MouseListener, ActionList
 		{
 			for(Sale s:gs)
 			{
-				if(s.getMembershipID() == null) {
+				if(s.getMembershipID().equals("C000")) {
 					Object[] gen = {s.getId(), s.getScheduleID(), s.getDate(), s.getEmployeeID(), s.getTotalPrice()};
 					tableVGensale.addRow(gen);
 				}
@@ -6534,7 +6534,7 @@ public class managerFunction extends JFrame implements MouseListener, ActionList
 		{
 			for(Sale s:gs)
 			{
-				if(s.getMembershipID() != null) {
+				if(!s.getMembershipID().equals("C000")) {
 					Object[] gen = {s.getId(), s.getMembershipID(), s.getScheduleID(), s.getDate(), s.getEmployeeID(), s.getTotalPrice()};
 					tableVMemsale.addRow(gen);
 				}
